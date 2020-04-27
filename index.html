@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Application</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="quiz-home-box custom-box">
+        <h4>Będziesz miał 15 aby udzielić odpowiedzi na każde pytanie</h4>
+        <button type="button" class="start-quiz-btn btn">Rozpocznij Quiz</button>
+    </div>
+    <div class="quiz-box custom-box">
+        <div class="stats">
+            <div class="quiz-time">
+                <div class="remaining-time">15</div>
+            </div>
+            <div class="score-board">
+                <span class="score-text">Wynik:</span>
+                <span class="correct-answer">0</span>
+            </div>
+        </div>
+        <div class="question-box">
+            <div class="current-question-num">
+                1 / 9
+            </div>
+            <div class="question-text">
+                To bedzie ptytanie na które trzeba odpowiedziec
+            </div>
+        </div>
+        <div class="option-box">
+            <div class="option">Prawda</div>
+            <div class="option">Falsz</div>
+        </div>
+        <div class="answer-description">
+            Napisz swoja odpowiedz
+        </div>
+        <div class="next-question">
+            <button type="button" class="next-question-btn btn">Nastepne pytanie</button>
+            <button type="button" class="see-result-btn btn">Zobacz swój wynik</button>
+        </div>
+    </div>
+    <div class="quiz-over-box custom-box" >
+        <h1>Wynik Quizu</h1>
+        <h4>Odpowiedzi: <span class="total-questions">9</span></h4>
+        <h4>Udzielone: <span class="total-attempt">8</span></h4>
+        <h4>Poprawne: <span class="total-correct">3</span></h4>
+        <h4>Zle: <span class="total-wrong">5</span></h4>
+        <h4>Procent poprawnych: <span class="percentage">33,33%</span></h4>
+        <button type="button" class="start-again-quiz-btn btn">Rozpocznij Ponownie</button>
+        <button type="button" class="go-home-btn btn">Opusc gre</button>
+    </div>
+</body>
+</html>
