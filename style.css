@@ -146,6 +146,17 @@ body {
     border-radius: 30px;
     cursor: pointer;
     position: relative;
+    opacity: 0;
+    animation: zoomIn .3s linear forwards;
+}
+@keyframes zoomIn{
+    0%{
+        transform: scale(0.8);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .quiz-box .option-box .option.already-answered{
@@ -157,6 +168,7 @@ body {
     border-color: #059e4c;
     color: #ffffff;
     animation: pulse 1s linear;
+    opacity: 1;
 }
 
 @keyframes pulse {
@@ -190,6 +202,7 @@ body {
     border-color: #d23723;
     color: #ffffff;
     animation: shake 1s linear;
+    opacity: 1;
 }
 
 .quiz-box .option-box .option.wrong::before {
@@ -253,13 +266,24 @@ body {
     display: none;
 }
 
+.quiz-box .answer-description.show{
+    display: block;
+    animation: fadeInRight 1s ease;
+}
+
 .quiz-box .next-question {
     margin-top: 20px;
     text-align: center;
 }
 
-.see-result-btn {
+.see-result-btn, .next-question-btn {
     display: none;
+}
+
+.see-result-btn.show,
+.next-question-btn.show {
+    display: inline-block;
+    animation: fadeInRight 1s ease;
 }
 
 .quiz-over-box {
