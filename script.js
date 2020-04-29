@@ -6,10 +6,17 @@ const answerDescription=document.querySelector('.answer-description');
 const nextQuestionBtn=document.querySelector('.next-question-btn');
 const correctAnswer=document.querySelector('.correct-answers');
 const seeResultBtn=document.querySelector('.see-result-btn');
+const remainingTime=document.querySelector('.remaining-time');
+const timeUpText=document.querySelector('.time-up-text');
+const quizHomeBox=document.querySelector('.quiz-home-box');
+const quizBox=document.querySelector('.quiz-box');
+const quizOverBox=document.querySelector('.quiz-over-box');
+let attempt = 0;
 let questionIndex = 0;
 let score = 0;
 let number = 0;
 let myArray=[];
+let interval;
 
 // questions and options and answer and answer description 
 // array of object
@@ -75,22 +82,84 @@ function check(ele) {
         scoreBoard();
     } else {
         ele.classList.add('wrong');
+        for(let i=0; i<optionBox.children.length; i++){
+            if(optionBox.children[i].id==myApp[questionIndex].answer){
+                optionBox.children[i].classList.add("show-correct");
+            }
+        }
     }
+    attempt++;
     disableOptions();
     showAnswerDescription();
     showNextQuestionBtn();
+    stopTimer();
+
       if(number == myApp.length){
         quizOver();
     }
 }
 
-generateRandomQuestion(){
+function generateRandomQuestion(){
     const randomNumber=Math.floor(Math.random() * myApp.length);
+    let hitDublicate=0;
     if(myArray.length == 0){
         questionIndex=randomNumber;
     }
+    else {
+        for(let i=0; i<myArray.length; i++){
+            if(randomNumber == myArray[i]) {
+                hitDublicate=1;
+            }
+        }
+        if(hitDublicate == 1){
+            generateRandomQuestion();
+            return;
+        }
+        else {
+            questionIndex=randomNumber;
+        }
+    }
+    myArray.push(randomNumber);
+    load();
+}
+function timeIsUp(){
+    showTimeUpText();
+    for(let i=0; i<optionBox.children.length; i++){
+        if(optionBox.children[i].id==myApp[questionIndex].answer){
+            optionBox.children[i].classList.add("show-correct");
+        }
+    }
+    disableOptions();
+    showAnswerDescription();
+    showNextQuestionBtn();
+    if(number == myApp.length){
+        quizOver();
+      }
 }
 
+function startTimer(){
+    remainingTime.classList.remove('less-time');
+    let timeLimit=15;
+    remainingTime.innerHTML=timeLimit;
+    interval=setInterval(()=>{
+        timeLimit--;
+        if(timeLimit < 10){
+            timeLimit="0"+timeLimit;
+        }
+        if(timeLimit <6){
+            remainingTime.classList.add('less-time');
+        }
+        remainingTime.innerHTML=timeLimit;
+        if(timeLimit == 0) {
+            clearInterval(interval);
+            timeIsUp();
+        }
+    }, 1000)
+}
+
+function stopTimer(){
+    clearInterval(interval);
+}
 // zablokowanie dalszego wybierania odpowiedzi
 function disableOptions(){
     for(let i=0; i<optionBox.children.length; i++) {
@@ -117,6 +186,15 @@ function showNextQuestionBtn() {
 function hideNextQuestionBtn() {
     nextQuestionBtn.classList.remove('show');
 }
+
+function showTimeUpText() {
+    timeUpText.classList.add('show');
+}
+
+function hideTimeUpText() {
+    timeUpText.classList.remove('show');
+}
+
 // wywołania wyniku
 function scoreBoard() {
     correctAnswer.innerHTML=score;
@@ -125,10 +203,19 @@ function scoreBoard() {
 nextQuestionBtn.addEventListener('click', nextQuestion);
 
 function nextQuestion(){
-    questionIndex++;
-    load();
+    generateRandomQuestion();
     hideNextQuestionBtn();
     hideAnswerDescription();
+    hideTimeUpText();
+    startTimer();
+}
+
+function quizResult(){
+    document.querySelector('.total-questions').innerHTML=myApp.length;
+    document.querySelector('.total-attempt').innerHTML=attempt;
+    document.querySelector('.total-correct').innerHTML=score;
+    document.querySelector('.total-wrong').innerHTML=attempt-score;
+    document.querySelector('.percentage').innerHTML=(score / myApp.length * 100 + '%');
 }
 
 function quizOver(){
@@ -136,7 +223,15 @@ function quizOver(){
     seeResultBtn.classList.add("show");
 }
 
+seeResultBtn.addEventListener('click', ()=> {
+    quizOverBox.classList.add('show');
+    seeResultBtn.classList.remove('show');
+    quizBox.style.display='none';
+    quizResult();
+})
+
 window.onload=()=> {
-    load();
+    // load();
     generateRandomQuestion();
+    startTimer();
 }
